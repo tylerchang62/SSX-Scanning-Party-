@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asset Downloads</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; padding: 0; background-color: #f4f4f9; }
+    h1 { color: #333; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { padding: 10px; border: 1px solid #ccc; }
+    th { background-color: #f0f0f0; }
+    a { text-decoration: none; color: #007BFF; }
+    a:hover { text-decoration: underline; }
+    button { background-color: #007BFF; color: white; border: none; padding: 5px 10px; cursor: pointer; }
+    button:hover { background-color: #0056b3; }
+  </style>
+</head>
+<body>
+  <h1>Welcome to the MEDIAART 3BB3 VR Files Page</h1>
+  <h3> Instructions: </h3>
+  <ol>
+  <li> To upload a file go to the following Google form: <a href="https://forms.gle/rRK41yUfbvvgtpoU6">https://forms.gle/rRK41yUfbvvgtpoU6</a>. You need to sign in to Google to use the form </li>
+  <li> After submitting the form, refresh the page until you see your file below. This could take up to 2 minutes </li>
+  <li> Once you see your file, click "Copy Link" to copy the link</li>
+  <li> Use these links to load your files in your Codecademy project </li>
+ </ol>
+
+  <h2>3D Models</h2>
+  <table id="3d-models"></table>
+
+
+  <h2>Failed to Upload (> 25 MB)</h2>
+      <table id="failed-to-upload"></table>
+
+  <script>
+    const fileData = {
+"3d-models": [
+  "robot_hand.mp4",
+  "robot_hand.mp4",
+  "robot_hand.mp4"
+],
+"failed-to-load": [
+]
+};
+
+    // Function to copy text to clipboard
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Link copied to clipboard!');
+      }, (err) => {
+        console.error('Could not copy text: ', err);
+      });
+    }
+
+    // Function to populate links dynamically
+    function populateLinks(category, elementId) {
+      const fileList = fileData[category];
+      const tableElement = document.getElementById(elementId);
+      tableElement.innerHTML = '<tr><th>File Name</th><th>Link</th><th>Action</th></tr>'; // Add headers
+
+      fileList.forEach(fileName => {
+        const encodedFileName = encodeURIComponent(fileName); // Encode filename for URL
+        const linkUrl = `https://mediaart-3bb3.github.io/vr_assets_fall_2024/${category}/${encodedFileName}`;
+        const row = document.createElement('tr');
+        
+        // Create cells
+        const nameCell = document.createElement('td');
+        nameCell.textContent = fileName; // File name
+
+        const linkCell = document.createElement('td');
+        const link = document.createElement('a');
+        link.href = linkUrl; // Use the GitHub link
+        link.textContent = linkUrl; // Display the link
+        link.target = "_blank"; // Open link in new tab
+        linkCell.appendChild(link);
+        
+        const actionCell = document.createElement('td');
+        const copyButton = document.createElement('button');
+        copyButton.textContent = 'Copy Link';
+        copyButton.onclick = () => copyToClipboard(linkUrl); // Copy link to clipboard
+        actionCell.appendChild(copyButton);
+
+        // Append cells to the row
+        row.appendChild(nameCell);
+        row.appendChild(linkCell);
+        row.appendChild(actionCell);
+
+        // Append the row to the table
+        tableElement.appendChild(row);
+      });
+    }
+
+    // Populate the lists for each category
+    populateLinks("3d-models", "3d-models");
+    populateLinks("failed-to-upload", "failed-to-upload");
+
+  </script>
+</body>
+</html>
